@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>FileContentSearch</title></head>
+<body>
+<main>
+<header><div><h1>FileContentSearch</h1><span class="muted">本机文档内容检索</span></div><div class="toolbar"><button id="types">索引类型</button><button id="refresh">建立本机索引</button><button id="rebuild" disabled>重建</button><button id="cancel" disabled>取消任务</button><button id="details" aria-expanded="false" aria-controls="index-details">索引详情</button></div></header>
+<section class="search-bar"><label for="query">搜索文档内容</label><div class="search-input"><span aria-hidden="true">⌕</span><input id="query" type="search" autocomplete="off" spellcheck="false" placeholder="输入记得的原文，例如：合同签署" maxlength="512" disabled/><kbd>Ctrl K</kbd></div><p class="hint">连续文字匹配 · 英文不区分大小写 · 仅在本机处理</p></section>
+<div id="index-status" role="status" aria-live="polite">正在连接本机引擎…</div>
+<section id="index-details" hidden><h2>索引范围与状态</h2><p id="coverage"></p><p id="inventory"></p><p id="roots"></p><p id="exclusions"></p><p>索引含有提取原文，默认未加密。生产索引位于 D:\FileContentSearchData。</p><ol id="failures"></ol></section>
+<section class="workspace" aria-label="搜索工作区">
+<div class="results-pane"><div class="pane-heading"><h2>匹配文件</h2><span id="count" role="status" aria-live="polite">等待搜索</span></div><div class="result-controls"><label for="result-type">文件类型</label><select id="result-type"><option value="">全部已选类型</option></select><button id="expand-all" title="展开目录树">展开</button><button id="collapse-all" title="折叠目录树">折叠</button></div><div id="result-message" class="empty">建立索引后，输入关键词开始搜索。</div><div id="results" role="tree" aria-label="命中文件目录树，上下选择、左右展开折叠" tabindex="0"><div id="result-items" role="none"></div></div><button id="more" hidden>继续查找 / 加载更多</button></div>
+<article class="preview-pane" aria-label="文档预览"><div id="preview-empty" class="empty"><span class="document-icon" aria-hidden="true">▤</span><h2>从内容找到文件</h2><p>选择左侧文件，查看带位置的命中片段。</p><p class="muted">支持文本、DOCX 正文与表格、文字版 PDF。</p></div><div id="preview" hidden><h2 id="file-name"></h2><p id="file-path"></p><div class="toolbar"><button id="open">打开原文件</button><button id="folder">所在文件夹</button><button id="copy">复制路径</button><button id="delete" class="danger">移入回收站</button></div><p class="hint">以下为提取文本；最多显示 8 组命中片段。</p><div id="snippets"></div></div></article>
+</section>
+<footer><span id="notice" role="status" aria-live="polite">索引只读源文件 · 删除需确认并移入回收站</span><span>退出后停止监听</span></footer>
+</main><script type="module" src="/src/main.ts"></script>
+<dialog id="types-dialog" aria-labelledby="types-heading"><h2 id="types-heading">选择要索引的文件类型</h2><p>只索引勾选的类型。取消勾选会移除该类型的旧索引，原文件保留；新增类型会继续扫描并建立索引。</p><div class="toolbar"><button id="types-default">恢复默认：DOCX / PDF / MD / Markdown</button><button id="types-all">全选</button></div><fieldset id="type-options"><legend>支持的扩展名（不包含 JSON）</legend></fieldset><p id="types-notice" role="status"></p><div class="dialog-actions"><button id="types-close">取消</button><button id="types-save">应用并更新索引</button></div></dialog>
+<dialog id="rebuild-dialog" aria-labelledby="rebuild-heading"><h2 id="rebuild-heading">重建索引？</h2><p>重新提取已选类型的文件。后台准备和重建期间可继续搜索旧索引，完成后自动切换；原文件保持不变。</p><div class="dialog-actions"><button id="rebuild-close" autofocus>取消</button><button id="rebuild-confirm">开始重建</button></div></dialog>
+<dialog id="recycle-dialog" aria-labelledby="recycle-heading"><h2 id="recycle-heading">将文件移入回收站？</h2><p id="recycle-path"></p><p>只处理这个文件。之后可在 Windows 回收站中恢复。</p><p id="recycle-notice" role="status"></p><div class="dialog-actions"><button id="recycle-close" autofocus>取消</button><button id="recycle-confirm" class="danger">移入回收站</button></div></dialog>
+</body></html>
